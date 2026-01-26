@@ -12,7 +12,9 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f3f4f6;
+            -webkit-tap-highlight-color: transparent;
         }
+        /* Card Styles */
         .card-richart {
             background: linear-gradient(135deg, #ffffff 0%, #ffe4e6 100%);
             border-left: 5px solid #ef4444;
@@ -21,136 +23,157 @@
             background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
             border-left: 5px solid #0ea5e9;
         }
+        .card-uniopen {
+            background: linear-gradient(135deg, #ffffff 0%, #dcfce7 100%);
+            border-left: 5px solid #10b981;
+        }
+        
         .search-container {
             position: sticky;
             top: 0;
             z-index: 50;
             background-color: #f3f4f6;
-            padding-bottom: 1rem;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Custom Scrollbar for tags */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
-<body class="text-gray-800">
+<body class="text-gray-800 pb-10">
 
     <div class="max-w-md mx-auto min-h-screen bg-gray-50 shadow-xl overflow-hidden relative">
         
         <!-- Header & Search -->
-        <div class="bg-gray-800 text-white p-6 pb-8 rounded-b-3xl shadow-lg">
-            <h1 class="text-2xl font-bold mb-1"><i class="fa-solid fa-credit-card mr-2"></i>刷哪張最划算？</h1>
-            <p class="text-gray-400 text-sm mb-4">Richart vs CUBE 權益比對</p>
+        <div class="bg-gray-800 text-white p-6 pb-6 rounded-b-3xl shadow-lg relative z-10">
+            <h1 class="text-2xl font-bold mb-1 flex items-center">
+                <i class="fa-solid fa-wallet mr-2 text-yellow-400"></i>
+                刷哪張最划算？
+            </h1>
+            <p class="text-gray-400 text-xs mb-4">Richart vs CUBE vs Uniopen</p>
             
             <div class="relative">
-                <input type="text" id="searchInput" placeholder="搜尋商家 (如: 7-11, Uber, Agoda...)" 
-                    class="w-full p-4 pl-12 rounded-xl text-gray-800 focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-md font-medium">
-                <i class="fa-solid fa-search absolute left-4 top-4 text-gray-400 text-lg"></i>
+                <input type="text" id="searchInput" placeholder="搜尋: 星巴克, 日本7-11, 康是美..." 
+                    class="w-full p-4 pl-12 rounded-xl text-gray-800 focus:outline-none focus:ring-4 focus:ring-green-400 shadow-md font-medium text-lg">
+                <i class="fa-solid fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
+                <button id="clearBtn" class="hidden absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-times-circle"></i>
+                </button>
             </div>
         </div>
 
-        <!-- Quick Categories -->
-        <div class="px-4 py-4 grid grid-cols-4 gap-2">
-            <button onclick="fillSearch('超商')" class="flex flex-col items-center justify-center bg-white p-2 rounded-lg shadow-sm hover:bg-gray-100 transition">
-                <div class="bg-orange-100 text-orange-600 w-10 h-10 rounded-full flex items-center justify-center mb-1">
-                    <i class="fa-solid fa-store"></i>
-                </div>
-                <span class="text-xs font-bold text-gray-600">超商</span>
+        <!-- Quick Categories (Horizontal Scroll) -->
+        <div class="px-4 py-3 flex space-x-3 overflow-x-auto hide-scrollbar whitespace-nowrap bg-white border-b border-gray-100">
+            <button onclick="fillSearch('星巴克')" class="flex items-center space-x-1 px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-sm font-bold border border-green-100">
+                <i class="fa-solid fa-coffee"></i> <span>星巴克</span>
             </button>
-            <button onclick="fillSearch('高鐵')" class="flex flex-col items-center justify-center bg-white p-2 rounded-lg shadow-sm hover:bg-gray-100 transition">
-                <div class="bg-blue-100 text-blue-600 w-10 h-10 rounded-full flex items-center justify-center mb-1">
-                    <i class="fa-solid fa-train"></i>
-                </div>
-                <span class="text-xs font-bold text-gray-600">交通</span>
+            <button onclick="fillSearch('7-11')" class="flex items-center space-x-1 px-3 py-1.5 bg-orange-50 text-orange-700 rounded-full text-sm font-bold border border-orange-100">
+                <i class="fa-solid fa-store"></i> <span>超商</span>
             </button>
-            <button onclick="fillSearch('餐廳')" class="flex flex-col items-center justify-center bg-white p-2 rounded-lg shadow-sm hover:bg-gray-100 transition">
-                <div class="bg-red-100 text-red-600 w-10 h-10 rounded-full flex items-center justify-center mb-1">
-                    <i class="fa-solid fa-utensils"></i>
-                </div>
-                <span class="text-xs font-bold text-gray-600">餐廳</span>
+            <button onclick="fillSearch('康是美')" class="flex items-center space-x-1 px-3 py-1.5 bg-pink-50 text-pink-700 rounded-full text-sm font-bold border border-pink-100">
+                <i class="fa-solid fa-pump-medical"></i> <span>康是美</span>
             </button>
-            <button onclick="fillSearch('日本')" class="flex flex-col items-center justify-center bg-white p-2 rounded-lg shadow-sm hover:bg-gray-100 transition">
-                <div class="bg-purple-100 text-purple-600 w-10 h-10 rounded-full flex items-center justify-center mb-1">
-                    <i class="fa-solid fa-plane"></i>
-                </div>
-                <span class="text-xs font-bold text-gray-600">海外</span>
+            <button onclick="fillSearch('家樂福')" class="flex items-center space-x-1 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-bold border border-blue-100">
+                <i class="fa-solid fa-cart-shopping"></i> <span>家樂福</span>
+            </button>
+            <button onclick="fillSearch('日本')" class="flex items-center space-x-1 px-3 py-1.5 bg-purple-50 text-purple-700 rounded-full text-sm font-bold border border-purple-100">
+                <i class="fa-solid fa-plane"></i> <span>日本</span>
             </button>
         </div>
 
         <!-- Results Area -->
-        <div id="resultsArea" class="px-4 pb-20 space-y-4">
+        <div id="resultsArea" class="px-4 py-4 space-y-4 min-h-[50vh]">
             <!-- Default State -->
             <div class="text-center text-gray-400 mt-10">
-                <i class="fa-solid fa-magnifying-glass text-4xl mb-3 opacity-30"></i>
-                <p>輸入商家名稱或類別<br>立即查詢最佳方案</p>
+                <i class="fa-brands fa-searchengin text-5xl mb-4 opacity-20"></i>
+                <p class="text-lg font-medium">請輸入商家名稱</p>
+                <p class="text-xs mt-1">系統將自動比較三張卡的最佳方案</p>
+                
+                <div class="mt-8 grid grid-cols-3 gap-2 text-xs opacity-60">
+                    <div class="flex items-center justify-center space-x-1">
+                        <div class="w-3 h-3 bg-red-500 rounded-full"></div><span>Richart</span>
+                    </div>
+                    <div class="flex items-center justify-center space-x-1">
+                        <div class="w-3 h-3 bg-blue-500 rounded-full"></div><span>CUBE</span>
+                    </div>
+                    <div class="flex items-center justify-center space-x-1">
+                        <div class="w-3 h-3 bg-emerald-500 rounded-full"></div><span>Uniopen</span>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Float Info -->
-        <div class="fixed bottom-0 w-full max-w-md bg-white border-t p-3 text-center text-xs text-gray-400">
-            資料來源：用戶提供之 Richart & CUBE 2025-2026 權益
+        <div class="text-center py-6 text-xs text-gray-400 border-t mt-4">
+            資料來源：Richart / CUBE / Uniopen 官方權益<br>
+            最後更新：2026/01
         </div>
     </div>
 
     <script>
         // --- DATA DEFINITION ---
         const CARDS = {
-            RICHART: { name: "台新 Richart", color: "text-red-600", bg: "card-richart" },
-            CUBE: { name: "國泰 CUBE", color: "text-blue-600", bg: "card-cube" }
+            RICHART: { name: "台新 Richart", color: "text-red-600", bg: "card-richart", tagBg: "bg-red-600" },
+            CUBE: { name: "國泰 CUBE", color: "text-blue-600", bg: "card-cube", tagBg: "bg-blue-600" },
+            UNIOPEN: { name: "中信 Uniopen", color: "text-emerald-600", bg: "card-uniopen", tagBg: "bg-emerald-600" }
         };
 
-        // Database based on user prompt
-        // Structure: { keywords: [], title: "", rewards: [{card, scheme, rate, note}] }
+        // Database
+        // Note: For 'rate', if it's a special offer like "Buy 1 Get 1", we assign a high number for sorting (e.g., 50) and a displayOverride string.
         const database = [
-            // --- Payment Methods ---
+            // --- COFFEE / STARBUCKS ---
             {
-                keywords: ["台新pay", "taishinpay"],
-                title: "台新 Pay 綁定",
+                keywords: ["星巴克", "starbucks", "咖啡"],
+                title: "星巴克 Starbucks",
                 rewards: [
-                    { card: CARDS.RICHART, scheme: "Pay著刷", rate: 3.8, note: "新光三越/超商/IKEA/康是美等" }
+                    { card: CARDS.UNIOPEN, scheme: "週一招待", rate: 50, displayOverride: "買一送一", note: "限週一/實體卡/買大杯x2" },
+                    { card: CARDS.RICHART, scheme: "Pay著刷", rate: 3.8, note: "限台新Pay綁定 (部分門市)" },
+                    { card: CARDS.RICHART, scheme: "好饗刷", rate: 3.3, note: "全台餐飲" },
+                    { card: CARDS.CUBE, scheme: "樂饗購", rate: 2.0, note: "" },
+                    { card: CARDS.UNIOPEN, scheme: "海外-韓國", rate: 10, note: "滿4萬韓元/上限1萬" },
+                    { card: CARDS.UNIOPEN, scheme: "海外-泰國", rate: 5, note: "滿500泰銖" }
                 ]
             },
-            {
-                keywords: ["linepay", "line pay"],
-                title: "LINE Pay 綁定",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "Pay著刷", rate: 2.3, note: "" },
-                    { card: CARDS.RICHART, scheme: "假日刷", rate: 2.0, note: "限節假日" }
-                ]
-            },
-            
-            // --- Convenience Stores ---
+
+            // --- CONVENIENCE STORES ---
             {
                 keywords: ["7-11", "seven", "711", "統一超商"],
                 title: "7-11 統一超商",
                 rewards: [
-                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "限台新Pay綁定" },
-                    { card: CARDS.CUBE, scheme: "集精選", rate: 2.0, note: "限實體/Open錢包" },
-                    { card: CARDS.RICHART, scheme: "Pay著刷", rate: 3.8, note: "台新Pay綁定" }
+                    { card: CARDS.UNIOPEN, scheme: "海外-日本", rate: 15, note: "單筆滿1500日圓 (2026/3/31前)" },
+                    { card: CARDS.UNIOPEN, scheme: "海外-韓國", rate: 5, note: "單筆滿2萬韓元 (2026/3/31前)" },
+                    { card: CARDS.UNIOPEN, scheme: "海外-泰國", rate: 5, note: "單筆滿500泰銖 (2026/3/31前)" },
+                    { card: CARDS.RICHART, scheme: "Pay著刷", rate: 3.8, note: "限台新Pay綁定 (國內)" },
+                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "限台新Pay綁定 (國內)" },
+                    { card: CARDS.CUBE, scheme: "集精選", rate: 2.0, note: "限實體/Open錢包 (國內)" },
+                    { card: CARDS.UNIOPEN, scheme: "國內一般", rate: 0.2, note: "無特別優惠" }
                 ]
             },
             {
                 keywords: ["全家", "family", "fami"],
                 title: "全家便利商店",
                 rewards: [
+                    { card: CARDS.RICHART, scheme: "Pay著刷", rate: 3.8, note: "限台新Pay綁定" },
                     { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "限台新Pay綁定" },
                     { card: CARDS.CUBE, scheme: "集精選", rate: 2.0, note: "限實體/FamiPay" },
-                    { card: CARDS.RICHART, scheme: "Pay著刷", rate: 3.8, note: "台新Pay綁定" }
-                ]
-            },
-            {
-                keywords: ["超商", "便利商店"],
-                title: "一般超商消費",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "限台新Pay" },
-                    { card: CARDS.CUBE, scheme: "集精選", rate: 2.0, note: "限指定超商" }
+                    { card: CARDS.UNIOPEN, scheme: "國內一般", rate: 0.2, note: "無特別優惠" }
                 ]
             },
 
-            // --- Supermarkets / Hypermarkets ---
+            // --- HYPERMARKETS ---
             {
                 keywords: ["家樂福", "carrefour"],
                 title: "家樂福",
                 rewards: [
-                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "集精選", rate: 2.0, note: "" }
+                    { card: CARDS.UNIOPEN, scheme: "天天優惠", rate: 10, note: "生鮮滿$259/自有品牌滿$599" },
+                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "不限品項" },
+                    { card: CARDS.CUBE, scheme: "集精選", rate: 2.0, note: "不限品項" }
                 ]
             },
             {
@@ -160,73 +183,25 @@
                     { card: CARDS.CUBE, scheme: "集精選", rate: 2.0, note: "實體門市(不含大全聯)" }
                 ]
             },
-            {
-                keywords: ["大買家", "唐吉軻德", "donki", "lopia"],
-                title: "量販/超市 (大買家/唐吉軻德/LOPIA)",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "集精選", rate: 2.0, note: "僅限 LOPIA" }
-                ]
-            },
 
-            // --- Transport ---
-            {
-                keywords: ["高鐵", "台灣高鐵", "thsr"],
-                title: "台灣高鐵",
-                rewards: [
-                    { card: CARDS.CUBE, scheme: "瘋大港", rate: 3.5, note: "2026/3/23前" },
-                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "" }
-                ]
-            },
-            {
-                keywords: ["台鐵", "火車", "tra"],
-                title: "台鐵",
-                rewards: [
-                    { card: CARDS.CUBE, scheme: "瘋大港", rate: 3.5, note: "2026/3/23前" },
-                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "" }
-                ]
-            },
-            {
-                keywords: ["uber", "優步"],
-                title: "Uber (叫車)",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "通勤" },
-                    { card: CARDS.RICHART, scheme: "玩旅刷", rate: 3.3, note: "海外" },
-                    { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "" }
-                ]
-            },
-            {
-                keywords: ["台灣大車隊", "55688", "yoxi"],
-                title: "計程車 (台灣大車隊/Yoxi)",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "" }
-                ]
-            },
-             {
-                keywords: ["加油", "中油", "全國加油"],
-                title: "加油 (中油直營/全國)",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "" }
-                ]
-            },
-            {
-                keywords: ["充電", "ev", "evoasis", "evalue"],
-                title: "電動車充電",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "" }
-                ]
-            },
-
-            // --- Drugstores / Pharmacy ---
+            // --- DRUGSTORES ---
             {
                 keywords: ["康是美", "cosmed"],
                 title: "康是美",
                 rewards: [
-                    { card: CARDS.RICHART, scheme: "Pay著刷", rate: 3.8, note: "限台新Pay" },
+                    { card: CARDS.UNIOPEN, scheme: "週日加碼", rate: 12.1, note: "週日滿$988送120點 (約12%)" },
+                    { card: CARDS.RICHART, scheme: "Pay著刷", rate: 3.8, note: "限台新Pay綁定" },
                     { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "" },
                     { card: CARDS.CUBE, scheme: "樂饗購", rate: 2.0, note: "" }
+                ]
+            },
+            {
+                keywords: ["olive young", "歐利芙洋"],
+                title: "Olive Young (韓國藥妝)",
+                rewards: [
+                    { card: CARDS.UNIOPEN, scheme: "海外-韓國", rate: 11.1, note: "單筆滿9萬韓元送1萬 (約11%)" },
+                    { card: CARDS.RICHART, scheme: "數趣刷", rate: 3.3, note: "限網購/海外" },
+                    { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "實體消費" }
                 ]
             },
             {
@@ -237,226 +212,114 @@
                     { card: CARDS.CUBE, scheme: "樂饗購", rate: 2.0, note: "" }
                 ]
             },
+
+            // --- DEPARTMENT STORES ---
             {
-                keywords: ["寶雅", "大樹", "杏一", "丁丁"],
-                title: "藥局/藥妝 (寶雅/大樹/杏一等)",
+                keywords: ["大丸", "daimaru", "福岡", "fukuoka"],
+                title: "日本大丸百貨 (福岡天神)",
                 rewards: [
-                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "" }
+                    { card: CARDS.UNIOPEN, scheme: "海外-日本", rate: 10, note: "滿3萬日圓 (2026/3/31前)" },
+                    { card: CARDS.RICHART, scheme: "玩旅刷", rate: 3.3, note: "" },
+                    { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "" }
                 ]
             },
-
-            // --- Department Stores ---
+            {
+                keywords: ["三越", "isetan", "伊勢丹"],
+                title: "日本三越伊勢丹",
+                rewards: [
+                    { card: CARDS.UNIOPEN, scheme: "海外-日本", rate: 10, note: "滿8萬日圓 (2026/3/31前)" },
+                    { card: CARDS.RICHART, scheme: "玩旅刷", rate: 3.3, note: "" },
+                    { card: CARDS.RICHART, scheme: "大筆刷", rate: 3.3, note: "國內新光三越" },
+                    { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "海外實體" }
+                ]
+            },
             {
                 keywords: ["新光三越", "skm"],
-                title: "新光三越",
+                title: "新光三越 (國內)",
                 rewards: [
                     { card: CARDS.RICHART, scheme: "Pay著刷", rate: 3.8, note: "限台新Pay" },
-                    { card: CARDS.RICHART, scheme: "大筆刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "樂饗購", rate: 2.0, note: "" },
-                    { card: CARDS.CUBE, scheme: "慶生月", rate: 2.0, note: "僅限慶生月權益(不含草衙)" }
-                ]
-            },
-            {
-                keywords: ["sogo", "遠東百貨", "大遠百", "遠百", "微風", "101", "巨城", "漢神", "誠品", "夢時代", "統一時代", "京站", "lalaport", "中友"],
-                title: "指定百貨 (SOGO/遠百/LaLaport等)",
-                rewards: [
                     { card: CARDS.RICHART, scheme: "大筆刷", rate: 3.3, note: "" },
                     { card: CARDS.CUBE, scheme: "樂饗購", rate: 2.0, note: "" }
                 ]
             },
-            {
-                keywords: ["outlet", "華泰", "skm park", "三井"],
-                title: "Outlet (三井/華泰/SKM Park)",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "大筆刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "樂饗購", rate: 2.0, note: "華泰/SKM Park/三井" }
-                ]
-            },
 
-            // --- Home / Fashion ---
+            // --- TRAVEL / OVERSEAS ---
             {
-                keywords: ["ikea", "宜家"],
-                title: "IKEA",
+                keywords: ["disney", "迪士尼", "日本迪士尼"],
+                title: "迪士尼 (Disney)",
                 rewards: [
-                    { card: CARDS.RICHART, scheme: "Pay著刷", rate: 3.8, note: "限台新Pay" },
-                    { card: CARDS.RICHART, scheme: "大筆刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "集精選", rate: 2.0, note: "" }
+                    { card: CARDS.UNIOPEN, scheme: "海外-日本", rate: 10, note: "日本迪士尼滿12500日圓" },
+                    { card: CARDS.RICHART, scheme: "數趣刷", rate: 3.3, note: "Disney+ 影音" },
+                    { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "全球迪士尼飯店/日本樂園" },
+                    { card: CARDS.CUBE, scheme: "玩數位", rate: 2.0, note: "Disney+ 影音" }
                 ]
             },
             {
-                keywords: ["uniqlo", "gu", "zara", "net", "lululemon"],
-                title: "時尚服飾 (Uniqlo/ZARA/NET等)",
+                keywords: ["樂高", "lego", "大阪"],
+                title: "大阪樂高探索中心",
                 rewards: [
-                    { card: CARDS.RICHART, scheme: "大筆刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "樂饗購", rate: 0, note: "CUBE 特別排除店中櫃/Uniqlo等，請注意" }
-                ]
-            },
-            {
-                keywords: ["特力屋", "hola", "宜得利", "nitori"],
-                title: "居家裝修 (特力屋/宜得利)",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "大筆刷", rate: 3.3, note: "" }
-                ]
-            },
-
-            // --- Dining / Delivery ---
-            {
-                keywords: ["外送", "foodpanda", "ubereats", "uber eats"],
-                title: "外送平台 (UberEats/Foodpanda)",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "好饗刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "樂饗購", rate: 2.0, note: "" },
-                    { card: CARDS.CUBE, scheme: "慶生月", rate: 2.0, note: "僅 UberEats" }
-                ]
-            },
-            {
-                keywords: ["餐廳", "吃飯", "餐飲", "王品"],
-                title: "全台餐飲",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "好饗刷", rate: 3.3, note: "不含餐券" },
-                    { card: CARDS.CUBE, scheme: "樂饗購", rate: 2.0, note: "不含餐券" }
-                ]
-            },
-            {
-                keywords: ["麥當勞"],
-                title: "麥當勞",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "好饗刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "樂饗購", rate: 2.0, note: "" }
-                ]
-            },
-
-            // --- Entertainment / KTV / Ticket ---
-            {
-                keywords: ["ktv", "錢櫃", "好樂迪", "sing!go", "享溫馨"],
-                title: "KTV 歡唱",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "好饗刷", rate: 3.3, note: "" }
-                ]
-            },
-            {
-                keywords: ["售票", "拓元", "kktix", "年代", "寬宏", "opentix"],
-                title: "售票系統 (拓元/KKTIX等)",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "好饗刷", rate: 3.3, note: "" }
-                ]
-            },
-            {
-                keywords: ["funnow"],
-                title: "FunNow",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "好饗刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "慶生月", rate: 2.0, note: "" }
-                ]
-            },
-
-            // --- E-commerce / Online ---
-            {
-                keywords: ["蝦皮", "shopee"],
-                title: "蝦皮購物",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "數趣刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "玩數位", rate: 2.0, note: "" }
-                ]
-            },
-            {
-                keywords: ["momo"],
-                title: "MOMO 購物",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "數趣刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "玩數位", rate: 2.0, note: "" }
-                ]
-            },
-            {
-                keywords: ["酷澎", "coupang"],
-                title: "Coupang 酷澎",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "數趣刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "玩數位", rate: 2.0, note: "僅限台灣" }
-                ]
-            },
-            {
-                keywords: ["淘寶", "taobao", "pchome", "amazon", "博客來"],
-                title: "網購 (淘寶/PChome/Amazon/博客來)",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "數趣刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "玩數位", rate: 2.0, note: "僅淘寶/PChome" }
-                ]
-            },
-
-            // --- Games / Streaming / AI ---
-            {
-                keywords: ["netflix", "disney", "disney+", "spotify", "youtube"],
-                title: "串流影音 (Netflix/Disney+/YT)",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "數趣刷", rate: 3.3, note: "不含 Spotify/YT" },
-                    { card: CARDS.CUBE, scheme: "玩數位", rate: 2.0, note: "" }
-                ]
-            },
-             {
-                keywords: ["steam", "遊戲", "game", "mycard", "playstation", "nintendo"],
-                title: "遊戲平台 (Steam/PS/Nintendo)",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "數趣刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "慶生月", rate: 2.0, note: "僅 PS/Nintendo" }
-                ]
-            },
-            {
-                keywords: ["chatgpt", "ai", "claude", "notion", "canva"],
-                title: "AI 工具 (ChatGPT/Claude/Canva)",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "數趣刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "玩數位", rate: 2.0, note: "" }
-                ]
-            },
-
-            // --- Travel / Overseas ---
-            {
-                keywords: ["日本", "韓國", "海外", "國外"],
-                title: "海外消費",
-                rewards: [
+                    { card: CARDS.UNIOPEN, scheme: "海外-日本", rate: 5, note: "日圓現金回饋" },
                     { card: CARDS.RICHART, scheme: "玩旅刷", rate: 3.3, note: "" },
+                    { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "" }
+                ]
+            },
+            {
+                keywords: ["日本", "japan", "jp"],
+                title: "日本旅遊通用",
+                rewards: [
+                    { card: CARDS.UNIOPEN, scheme: "特定通路", rate: 15, note: "7-11(15%)/迪士尼(10%)" },
+                    { card: CARDS.RICHART, scheme: "玩旅刷", rate: 3.3, note: "實體及線上" },
                     { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "限實體消費" }
                 ]
             },
+
+            // --- DIGITAL / ICASH ---
             {
-                keywords: ["航空", "機票", "長榮", "華航", "星宇", "虎航"],
-                title: "航空公司",
+                keywords: ["icash", "自動加值", "autocush"],
+                title: "icash Pay / 自動加值",
                 rewards: [
-                    { card: CARDS.RICHART, scheme: "玩旅刷", rate: 3.3, note: "" },
+                    { card: CARDS.UNIOPEN, scheme: "自動加值", rate: 10, note: "需每月登錄/icash2.0自動加值" }
+                ]
+            },
+            
+            // --- EXISTING CATEGORIES (Quickly merged) ---
+            {
+                keywords: ["uber", "優步"],
+                title: "Uber (叫車)",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "通勤" },
+                    { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "" }
+                ]
+            },
+            {
+                keywords: ["外送", "foodpanda", "ubereats"],
+                title: "外送平台",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "好饗刷", rate: 3.3, note: "" },
+                    { card: CARDS.CUBE, scheme: "樂饗購", rate: 2.0, note: "" }
+                ]
+            },
+            {
+                keywords: ["高鐵", "台灣高鐵"],
+                title: "台灣高鐵",
+                rewards: [
+                    { card: CARDS.CUBE, scheme: "瘋大港", rate: 3.5, note: "2026/3/23前" },
+                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "" },
                     { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "" }
                 ]
             },
              {
-                keywords: ["klook", "agoda", "booking", "trip.com", "airbnb", "hotels", "expedia", "kkday"],
-                title: "訂房/旅遊平台 (Agoda/Klook等)",
+                keywords: ["momo", "蝦皮", "網購"],
+                title: "網購 (MOMO/蝦皮)",
                 rewards: [
-                    { card: CARDS.RICHART, scheme: "玩旅刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "含 KKday" },
-                    { card: CARDS.CUBE, scheme: "慶生月", rate: 2.0, note: "僅 Klook" }
-                ]
-            },
-            {
-                keywords: ["旅行社", "雄獅", "易遊網", "可樂", "東南"],
-                title: "旅行社",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "玩旅刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "" }
-                ]
-            },
-            
-            // --- Japan IC Cards ---
-            {
-                keywords: ["suica", "icoca", "pasmo", "西瓜卡"],
-                title: "日本交通卡 (Suica/Pasmo)",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "玩旅刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "限 Apple Pay 加值" }
+                    { card: CARDS.RICHART, scheme: "數趣刷", rate: 3.3, note: "" },
+                    { card: CARDS.CUBE, scheme: "玩數位", rate: 2.0, note: "" }
                 ]
             }
         ];
 
         const searchInput = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearBtn');
         const resultsArea = document.getElementById('resultsArea');
 
         // Helper to populate search from buttons
@@ -469,12 +332,16 @@
         function performSearch(query) {
             query = query.toLowerCase().trim();
             resultsArea.innerHTML = '';
+            
+            // Toggle clear button
+            clearBtn.classList.toggle('hidden', !query);
 
             if (!query) {
+                // Show default message
                 resultsArea.innerHTML = `
-                    <div class="text-center text-gray-400 mt-10">
-                        <i class="fa-solid fa-magnifying-glass text-4xl mb-3 opacity-30"></i>
-                        <p>輸入商家名稱或類別<br>立即查詢最佳方案</p>
+                    <div class="text-center text-gray-400 mt-10 animate-fade-in-up">
+                        <i class="fa-brands fa-searchengin text-5xl mb-4 opacity-20"></i>
+                        <p class="text-lg font-medium">請輸入商家名稱</p>
                     </div>`;
                 return;
             }
@@ -486,19 +353,15 @@
 
             if (matches.length === 0) {
                  resultsArea.innerHTML = `
-                    <div class="text-center text-gray-500 mt-10">
-                        <p class="text-lg">🤔 找不到「${query}」的特定加碼</p>
-                        <p class="text-sm mt-2 text-gray-400">建議檢查通用回饋：</p>
-                        <div class="mt-4 bg-white p-4 rounded-xl shadow-sm inline-block text-left w-full">
-                            <div class="border-b pb-2 mb-2">
-                                <span class="font-bold text-red-600">Richart</span>
-                                <span class="float-right font-bold">2%</span>
-                                <div class="text-xs text-gray-500">假日刷 (節假日不限通路)</div>
+                    <div class="text-center text-gray-500 mt-10 animate-fade-in-up">
+                        <p class="text-lg">🤔 找不到「${query}」</p>
+                        <p class="text-sm mt-2 text-gray-400">建議使用通用回饋較高的卡片：</p>
+                        <div class="mt-4 mx-auto max-w-xs bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-left">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-red-600"><i class="fa-solid fa-credit-card mr-2"></i>Richart</span>
+                                <span class="font-bold">2%</span>
                             </div>
-                            <div>
-                                <span class="font-bold text-gray-600">一般消費</span>
-                                <span class="float-right text-sm">依各卡基本回饋</span>
-                            </div>
+                            <div class="text-xs text-gray-500 mt-1">若為假日消費 (平日依基本回饋)</div>
                         </div>
                     </div>`;
                 return;
@@ -510,32 +373,39 @@
                 const sortedRewards = match.rewards.sort((a, b) => b.rate - a.rate);
 
                 const cardHtml = `
-                    <div class="bg-white rounded-2xl shadow-md overflow-hidden animate-fade-in-up">
-                        <div class="bg-gray-700 text-white px-4 py-2 text-sm font-bold flex justify-between items-center">
-                            <span><i class="fa-solid fa-shop mr-2"></i>${match.title}</span>
+                    <div class="bg-white rounded-2xl shadow-md overflow-hidden animate-fade-in-up border border-gray-100 mb-4">
+                        <div class="bg-gray-800 text-white px-4 py-3 text-base font-bold flex justify-between items-center">
+                            <span><i class="fa-solid fa-store mr-2 text-gray-400"></i>${match.title}</span>
                         </div>
                         <div class="divide-y divide-gray-100">
                             ${sortedRewards.map((r, index) => {
                                 const isWinner = index === 0;
-                                const winnerClass = isWinner ? "bg-yellow-50" : "";
-                                const starIcon = isWinner ? '<i class="fa-solid fa-crown text-yellow-500 mr-1"></i>' : '';
+                                const winnerBg = isWinner ? "bg-yellow-50/60" : "";
+                                const crown = isWinner ? '<i class="fa-solid fa-crown text-yellow-500 mr-1.5 text-lg"></i>' : '';
                                 
+                                // Display Logic: Check if override exists (for "Buy 1 Get 1")
+                                const rateDisplay = r.displayOverride 
+                                    ? `<span class="text-xl font-bold ${r.card.color}">${r.displayOverride}</span>` 
+                                    : `<span class="text-3xl font-extrabold ${r.card.color}">${r.rate}</span><span class="text-sm font-bold ${r.card.color}">%</span>`;
+
                                 return `
-                                <div class="p-4 ${r.card.bg} ${winnerClass} relative">
+                                <div class="p-4 ${r.card.bg} ${winnerBg} relative transition duration-150">
                                     <div class="flex justify-between items-start">
-                                        <div>
-                                            <div class="flex items-center">
-                                                ${starIcon}
-                                                <h3 class="font-bold ${r.card.color}">${r.card.name}</h3>
+                                        <div class="flex-1 pr-2">
+                                            <div class="flex items-center mb-1.5">
+                                                ${crown}
+                                                <h3 class="font-bold text-base ${r.card.color}">${r.card.name}</h3>
                                             </div>
-                                            <div class="mt-1 text-sm text-gray-600">
-                                                方案：<span class="inline-block bg-gray-800 text-white px-2 py-0.5 rounded text-xs font-bold tracking-wide">${r.scheme}</span>
+                                            <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                                                 <span class="px-2 py-0.5 rounded text-xs font-bold text-white tracking-wide shadow-sm ${r.card.tagBg}">
+                                                    ${r.scheme}
+                                                 </span>
                                             </div>
-                                            ${r.note ? `<div class="mt-1 text-xs text-gray-500"><i class="fa-solid fa-circle-info mr-1"></i>${r.note}</div>` : ''}
+                                            ${r.note ? `<div class="text-xs text-gray-500 leading-tight"><i class="fa-solid fa-circle-info mr-1 opacity-70"></i>${r.note}</div>` : ''}
                                         </div>
-                                        <div class="text-right">
-                                            <div class="text-3xl font-extrabold ${r.card.color}">${r.rate}<span class="text-sm">%</span></div>
-                                            ${isWinner ? '<div class="text-xs text-yellow-600 font-bold mt-1">最高回饋</div>' : ''}
+                                        <div class="text-right flex flex-col items-end justify-center min-w-[80px]">
+                                            ${rateDisplay}
+                                            ${isWinner ? '<div class="text-[10px] text-yellow-600 font-bold mt-1 bg-yellow-100 px-1.5 py-0.5 rounded-full">首選</div>' : ''}
                                         </div>
                                     </div>
                                 </div>
@@ -550,6 +420,11 @@
 
         // Listeners
         searchInput.addEventListener('input', (e) => performSearch(e.target.value));
+        clearBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            performSearch('');
+            searchInput.focus();
+        });
 
         // Add simple animation styles
         const styleSheet = document.createElement("style");
