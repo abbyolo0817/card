@@ -127,6 +127,23 @@
         // Database
         // Note: For 'rate', if it's a special offer like "Buy 1 Get 1", we assign a high number for sorting (e.g., 50) and a displayOverride string.
         const database = [
+            // --- PAYMENTS (Richart Special) ---
+            {
+                keywords: ["line pay", "linepay", "一般", "其他", "通用"],
+                title: "LINE Pay (一般消費)",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "Pay著刷", rate: 2.3, note: "全通路適用 (無其他優惠時推薦)" },
+                    { card: CARDS.RICHART, scheme: "假日刷", rate: 2.0, note: "節假日綁定" }
+                ]
+            },
+            {
+                keywords: ["台新pay", "taishin pay"],
+                title: "台新 Pay",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "Pay著刷", rate: 3.8, note: "新光三越/四大超商/IKEA/康是美" }
+                ]
+            },
+
             // --- COFFEE / STARBUCKS ---
             {
                 keywords: ["星巴克", "starbucks", "咖啡"],
@@ -165,6 +182,22 @@
                     { card: CARDS.UNIOPEN, scheme: "國內一般", rate: 0.2, note: "無特別優惠" }
                 ]
             },
+            {
+                keywords: ["ok", "ok超商", "萊爾富", "hi-life", "hilife"],
+                title: "四大超商 (OK/萊爾富)",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "Pay著刷", rate: 3.8, note: "限台新Pay綁定" },
+                    { card: CARDS.CUBE, scheme: "集精選", rate: 0.3, note: "一般消費" }
+                ]
+            },
+            {
+                keywords: ["大買家", "唐吉軻德", "donki", "lopia"],
+                title: "量販超市 (唐吉軻德/LOPIA)",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "" },
+                    { card: CARDS.CUBE, scheme: "集精選", rate: 2.0, note: "僅限 LOPIA" }
+                ]
+            },
 
             // --- HYPERMARKETS ---
             {
@@ -184,7 +217,23 @@
                 ]
             },
 
-            // --- DRUGSTORES ---
+            // --- GAS & CHARGING (New) ---
+            {
+                keywords: ["加油", "中油", "全國加油", "特急電"],
+                title: "加油 (中油直營/全國)",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "中油直營/全國" }
+                ]
+            },
+            {
+                keywords: ["充電", "ev", "evoasis", "evalue", "uspace", "車麻吉", "autopass"],
+                title: "電動車充電/停車",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "" }
+                ]
+            },
+
+            // --- DRUGSTORES & PHARMACY ---
             {
                 keywords: ["康是美", "cosmed"],
                 title: "康是美",
@@ -193,6 +242,13 @@
                     { card: CARDS.RICHART, scheme: "Pay著刷", rate: 3.8, note: "限台新Pay綁定" },
                     { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "" },
                     { card: CARDS.CUBE, scheme: "樂饗購", rate: 2.0, note: "" }
+                ]
+            },
+            {
+                keywords: ["寶雅", "大樹", "杏一", "丁丁", "佑全", "健康人生"],
+                title: "藥局/藥妝 (寶雅/大樹/杏一等)",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "" }
                 ]
             },
             {
@@ -234,16 +290,84 @@
                 ]
             },
             {
-                keywords: ["新光三越", "skm"],
-                title: "新光三越 (國內)",
+                keywords: ["新光三越", "skm", "sogo", "遠東百貨", "大遠百", "遠百", "微風", "101", "巨城", "漢神", "誠品", "夢時代", "統一時代", "京站", "lalaport", "中友", "三創", "南紡", "宏匯", "美麗華"],
+                title: "國內百貨 (新光/SOGO/遠百等)",
                 rewards: [
-                    { card: CARDS.RICHART, scheme: "Pay著刷", rate: 3.8, note: "限台新Pay" },
+                    { card: CARDS.RICHART, scheme: "Pay著刷", rate: 3.8, note: "限台新Pay (僅新光三越)" },
+                    { card: CARDS.RICHART, scheme: "大筆刷", rate: 3.3, note: "指定百貨" },
+                    { card: CARDS.CUBE, scheme: "樂饗購", rate: 2.0, note: "指定百貨" },
+                    { card: CARDS.CUBE, scheme: "慶生月", rate: 2.0, note: "新光三越 (慶生月權益)" }
+                ]
+            },
+            {
+                keywords: ["outlet", "華泰", "skm park", "三井", "mitsui"],
+                title: "Outlet (三井/華泰/SKM Park)",
+                rewards: [
                     { card: CARDS.RICHART, scheme: "大筆刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "樂饗購", rate: 2.0, note: "" }
+                    { card: CARDS.CUBE, scheme: "樂饗購", rate: 2.0, note: "華泰/SKM Park/三井" }
                 ]
             },
 
-            // --- TRAVEL / OVERSEAS ---
+            // --- HOME & FASHION (New/Updated) ---
+            {
+                keywords: ["ikea", "宜家"],
+                title: "IKEA",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "Pay著刷", rate: 3.8, note: "限台新Pay" },
+                    { card: CARDS.RICHART, scheme: "大筆刷", rate: 3.3, note: "" },
+                    { card: CARDS.CUBE, scheme: "集精選", rate: 2.0, note: "" }
+                ]
+            },
+            {
+                keywords: ["特力屋", "hola", "宜得利", "nitori", "瑪黑", "居家"],
+                title: "居家裝修 (特力屋/宜得利/HOLA)",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "大筆刷", rate: 3.3, note: "" }
+                ]
+            },
+            {
+                keywords: ["uniqlo", "gu", "zara", "net", "lululemon"],
+                title: "時尚服飾 (Uniqlo/ZARA/NET等)",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "大筆刷", rate: 3.3, note: "" },
+                    { card: CARDS.CUBE, scheme: "樂饗購", rate: 0.3, note: "CUBE 排除店中櫃/Uniqlo" }
+                ]
+            },
+
+            // --- DINING & HOTELS (Updated) ---
+             {
+                keywords: ["餐廳", "吃飯", "餐飲", "王品"],
+                title: "全台餐飲",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "好饗刷", rate: 3.3, note: "不含餐券" },
+                    { card: CARDS.CUBE, scheme: "樂饗購", rate: 2.0, note: "不含餐券" }
+                ]
+            },
+            {
+                keywords: ["飯店", "住宿", "晶華", "雲朗", "萬豪", "煙波", "老爺", "福華", "漢來", "君悅", "洲際", "寒沐"],
+                title: "國內飯店住宿",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "好饗刷", rate: 3.3, note: "指定飯店集團" },
+                    { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "國內飯店/星野集團" }
+                ]
+            },
+            {
+                keywords: ["ktv", "錢櫃", "好樂迪", "sing!go", "享溫馨", "oncor"],
+                title: "KTV 歡唱",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "好饗刷", rate: 3.3, note: "" }
+                ]
+            },
+            {
+                keywords: ["售票", "拓元", "kktix", "年代", "寬宏", "opentix", "funnow"],
+                title: "售票娛樂 (拓元/KKTIX/FunNow)",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "好饗刷", rate: 3.3, note: "" },
+                    { card: CARDS.CUBE, scheme: "慶生月", rate: 2.0, note: "僅 FunNow" }
+                ]
+            },
+
+            // --- TRAVEL / OVERSEAS (Updated) ---
             {
                 keywords: ["disney", "迪士尼", "日本迪士尼"],
                 title: "迪士尼 (Disney)",
@@ -264,16 +388,49 @@
                 ]
             },
             {
-                keywords: ["日本", "japan", "jp"],
-                title: "日本旅遊通用",
+                keywords: ["日本", "japan", "jp", "韓國", "海外", "國外"],
+                title: "海外消費 (日韓/全球)",
                 rewards: [
-                    { card: CARDS.UNIOPEN, scheme: "特定通路", rate: 15, note: "7-11(15%)/迪士尼(10%)" },
+                    { card: CARDS.UNIOPEN, scheme: "特定通路", rate: 15, note: "7-11(15%)/迪士尼(10%) 等" },
                     { card: CARDS.RICHART, scheme: "玩旅刷", rate: 3.3, note: "實體及線上" },
                     { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "限實體消費" }
                 ]
             },
+            {
+                keywords: ["航空", "機票", "長榮", "華航", "星宇", "虎航", "國泰", "樂桃", "阿聯酋", "酷航", "捷星", "日航", "越捷", "cathay", "eva", "china airlines"],
+                title: "航空公司",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "玩旅刷", rate: 3.3, note: "" },
+                    { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "" }
+                ]
+            },
+             {
+                keywords: ["旅行社", "雄獅", "易遊網", "可樂", "東南", "長汎", "五福", "喜鴻", "易飛", "燦星", "加利利", "鳳凰", "山富"],
+                title: "旅行社",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "玩旅刷", rate: 3.3, note: "" },
+                    { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "" }
+                ]
+            },
+             {
+                keywords: ["klook", "agoda", "booking", "trip.com", "airbnb", "hotels", "expedia", "kkday"],
+                title: "訂房/旅遊平台 (Agoda/Klook等)",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "玩旅刷", rate: 3.3, note: "" },
+                    { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "含 KKday" },
+                    { card: CARDS.CUBE, scheme: "慶生月", rate: 2.0, note: "僅 Klook" }
+                ]
+            },
+            {
+                keywords: ["wowpass", "airsim", "suica", "icoca", "pasmo", "西瓜卡"],
+                title: "海外交通卡/網卡 (WOWPASS/Suica)",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "玩旅刷", rate: 3.3, note: "" },
+                    { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "限 Apple Pay 加值" }
+                ]
+            },
 
-            // --- DIGITAL / ICASH ---
+            // --- DIGITAL / ONLINE (Updated) ---
             {
                 keywords: ["icash", "自動加值", "autocush"],
                 title: "icash Pay / 自動加值",
@@ -281,13 +438,53 @@
                     { card: CARDS.UNIOPEN, scheme: "自動加值", rate: 10, note: "需每月登錄/icash2.0自動加值" }
                 ]
             },
-            
-            // --- EXISTING CATEGORIES (Quickly merged) ---
             {
-                keywords: ["uber", "優步"],
-                title: "Uber (叫車)",
+                keywords: ["momo", "蝦皮", "酷澎", "coupang", "淘寶", "pchome", "amazon", "博客來", "東森", "payeasy", "shein", "iherb"],
+                title: "網購 (蝦皮/MOMO/酷澎等)",
                 rewards: [
-                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "通勤" },
+                    { card: CARDS.RICHART, scheme: "數趣刷", rate: 3.3, note: "" },
+                    { card: CARDS.CUBE, scheme: "玩數位", rate: 2.0, note: "排除 Amazon/PayEasy/iHerb 等" }
+                ]
+            },
+            {
+                keywords: ["線上課程", "hahow", "tutor", "知識衛星", "pressplay", "amazing"],
+                title: "線上課程 (Hahow/TutorABC)",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "數趣刷", rate: 3.3, note: "" }
+                ]
+            },
+            {
+                keywords: ["game", "遊戲", "steam", "mycard", "橘子", "playstation", "nintendo"],
+                title: "遊戲點數 (Steam/MyCard)",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "數趣刷", rate: 3.3, note: "" },
+                    { card: CARDS.CUBE, scheme: "慶生月", rate: 2.0, note: "僅 PS/Nintendo" }
+                ]
+            },
+            {
+                keywords: ["ai", "chatgpt", "claude", "notion", "canva", "perplexity"],
+                title: "AI 工具 (ChatGPT/Claude)",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "數趣刷", rate: 3.3, note: "" },
+                    { card: CARDS.CUBE, scheme: "玩數位", rate: 2.0, note: "" }
+                ]
+            },
+            
+            // --- TRANSPORT (Domestic) ---
+            {
+                keywords: ["uber", "優步", "bolt", "叫車"],
+                title: "Uber / Bolt",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "通勤 (國內)" },
+                    { card: CARDS.RICHART, scheme: "玩旅刷", rate: 3.3, note: "海外 Uber/Grab" },
+                    { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "" }
+                ]
+            },
+            {
+                keywords: ["台灣大車隊", "55688", "yoxi"],
+                title: "計程車 (55688/Yoxi)",
+                rewards: [
+                    { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "" },
                     { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "" }
                 ]
             },
@@ -300,20 +497,12 @@
                 ]
             },
             {
-                keywords: ["高鐵", "台灣高鐵"],
-                title: "台灣高鐵",
+                keywords: ["高鐵", "台灣高鐵", "台鐵"],
+                title: "雙鐵 (高鐵/台鐵)",
                 rewards: [
                     { card: CARDS.CUBE, scheme: "瘋大港", rate: 3.5, note: "2026/3/23前" },
                     { card: CARDS.RICHART, scheme: "天天刷", rate: 3.3, note: "" },
                     { card: CARDS.CUBE, scheme: "趣旅行", rate: 2.0, note: "" }
-                ]
-            },
-             {
-                keywords: ["momo", "蝦皮", "網購"],
-                title: "網購 (MOMO/蝦皮)",
-                rewards: [
-                    { card: CARDS.RICHART, scheme: "數趣刷", rate: 3.3, note: "" },
-                    { card: CARDS.CUBE, scheme: "玩數位", rate: 2.0, note: "" }
                 ]
             }
         ];
@@ -355,13 +544,17 @@
                  resultsArea.innerHTML = `
                     <div class="text-center text-gray-500 mt-10 animate-fade-in-up">
                         <p class="text-lg">🤔 找不到「${query}」</p>
-                        <p class="text-sm mt-2 text-gray-400">建議使用通用回饋較高的卡片：</p>
-                        <div class="mt-4 mx-auto max-w-xs bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-left">
-                            <div class="flex items-center justify-between">
+                        <p class="text-sm mt-2 text-gray-400">若店家支援 LINE Pay，推薦使用：</p>
+                        <div class="mt-4 mx-auto max-w-xs bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-left relative overflow-hidden">
+                             <div class="absolute top-0 right-0 bg-red-500 text-white text-[10px] px-2 py-1 rounded-bl-lg">保底推薦</div>
+                            <div class="flex items-center justify-between mb-2">
                                 <span class="font-bold text-red-600"><i class="fa-solid fa-credit-card mr-2"></i>Richart</span>
-                                <span class="font-bold">2%</span>
+                                <span class="text-2xl font-extrabold text-red-600">2.3%</span>
                             </div>
-                            <div class="text-xs text-gray-500 mt-1">若為假日消費 (平日依基本回饋)</div>
+                            <div class="flex items-center gap-2">
+                                <span class="bg-gray-800 text-white px-2 py-0.5 rounded text-xs">Pay著刷</span>
+                                <span class="text-xs text-gray-500">需綁定 LINE Pay</span>
+                            </div>
                         </div>
                     </div>`;
                 return;
